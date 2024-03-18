@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1710262966 source:c:\users\cuong\documents\github\game\bai_3\main.cpp
+	"graphics.h"
+
+1710262972 c:\users\cuong\documents\github\game\bai_3\graphics.h
+	<SDL.h>
+	<SDL_image.h>
+	"defs.h"
+
+1710260911 c:\users\cuong\documents\github\game\bai_3\defs.h
+
