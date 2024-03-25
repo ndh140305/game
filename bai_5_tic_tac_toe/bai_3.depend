@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1710262966 source:c:\users\cuong\documents\github\game\bai_3\main.cpp
+	"graphics.h"
+
+1710262972 c:\users\cuong\documents\github\game\bai_3\graphics.h
+	<SDL.h>
+	<SDL_image.h>
+	"defs.h"
+
+1710260911 c:\users\cuong\documents\github\game\bai_3\defs.h
+
+1711357493 source:c:\users\cuong\documents\github\game\bai_5_tic_tac_toe\main.cpp
+	"graphics.h"
+	"defs.h"
+	"logic.h"
+	<bits/stdc++.h>
+
+1711358575 c:\users\cuong\documents\github\game\bai_5_tic_tac_toe\graphics.h
+	<SDL.h>
+	<SDL_image.h>
+	"defs.h"
+	"logic.h"
+
+1711358575 c:\users\cuong\documents\github\game\bai_5_tic_tac_toe\defs.h
+
+1711357493 c:\users\cuong\documents\github\game\bai_5_tic_tac_toe\logic.h
+
