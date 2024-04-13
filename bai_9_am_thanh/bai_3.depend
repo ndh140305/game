@@ -21,12 +21,12 @@
 
 1710260911 c:\users\cuong\documents\github\game\bai_6_event_ban_phim\defs.h
 
-1711382734 source:c:\users\cuong\documents\github\game\bai_9_am_thanh\main.cpp
+1713008312 source:c:\users\cuong\documents\github\game\bai_9_am_thanh\main.cpp
 	"graphics.h"
 	"defs.h"
 	<bits/stdc++.h>
 
-1712823438 c:\users\cuong\documents\github\game\bai_9_am_thanh\graphics.h
+1712997528 c:\users\cuong\documents\github\game\bai_9_am_thanh\graphics.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>

@@ -1,0 +1,22 @@
+# depslib dependency file v1.0
+1710262966 source:c:\users\cuong\documents\github\game\bai_3\main.cpp
+	"graphics.h"
+
+1710262972 c:\users\cuong\documents\github\game\bai_3\graphics.h
+	<SDL.h>
+	<SDL_image.h>
+	"defs.h"
+
+1710260911 c:\users\cuong\documents\github\game\bai_3\defs.h
+
+1713023354 source:c:\users\cuong\documents\github\game\bai_8_nhan_vat_hoat_hinh\main.cpp
+	"graphics.h"
+
+1713023481 c:\users\cuong\documents\github\game\bai_8_nhan_vat_hoat_hinh\graphics.h
+	<SDL.h>
+	<SDL_image.h>
+	"defs.h"
+	<vector>
+
+1713023513 c:\users\cuong\documents\github\game\bai_8_nhan_vat_hoat_hinh\defs.h
+
