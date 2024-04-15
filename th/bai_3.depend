@@ -47,21 +47,29 @@
 
 1713087804 c:\users\cuong\documents\github\game\bai_9_am_thanh - copy\defs.h
 
-1713156141 source:c:\users\cuong\documents\github\game\th\main.cpp
+1713196461 source:c:\users\cuong\documents\github\game\th\main.cpp
 	<SDL.h>
 	<SDL_image.h>
+	<SDL_mixer.h>
 	<bits/stdc++.h>
 	"defs.h"
 	"object.h"
 	"graphics.h"
 
-1713156725 c:\users\cuong\documents\github\game\th\defs.h
+1713192844 c:\users\cuong\documents\github\game\th\defs.h
 
-1713156820 c:\users\cuong\documents\github\game\th\object.h
+1713196373 c:\users\cuong\documents\github\game\th\object.h
+	<vector>
 	<SDL.h>
 	<SDL_image.h>
 	<bits/stdc++.h>
 	"defs.h"
 
-1713155046 c:\users\cuong\documents\github\game\th\graphics.h
+1713189679 c:\users\cuong\documents\github\game\th\graphics.h
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	"defs.h"
+
+1713158958 c:\users\cuong\documents\github\game\th\sounds.h
 
