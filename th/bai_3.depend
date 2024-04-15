@@ -1,0 +1,67 @@
+# depslib dependency file v1.0
+1710262966 source:c:\users\cuong\documents\github\game\bai_3\main.cpp
+	"graphics.h"
+
+1710262972 c:\users\cuong\documents\github\game\bai_3\graphics.h
+	<SDL.h>
+	<SDL_image.h>
+	"defs.h"
+
+1710260911 c:\users\cuong\documents\github\game\bai_3\defs.h
+
+1711382509 source:c:\users\cuong\documents\github\game\bai_6_event_ban_phim\main.cpp
+	"graphics.h"
+	"defs.h"
+	<bits/stdc++.h>
+
+1710740705 c:\users\cuong\documents\github\game\bai_6_event_ban_phim\graphics.h
+	<SDL.h>
+	<SDL_image.h>
+	"defs.h"
+
+1710260911 c:\users\cuong\documents\github\game\bai_6_event_ban_phim\defs.h
+
+1713008312 source:c:\users\cuong\documents\github\game\bai_9_am_thanh\main.cpp
+	"graphics.h"
+	"defs.h"
+	<bits/stdc++.h>
+
+1712997528 c:\users\cuong\documents\github\game\bai_9_am_thanh\graphics.h
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	"defs.h"
+
+1710260911 c:\users\cuong\documents\github\game\bai_9_am_thanh\defs.h
+
+1713090126 source:c:\users\cuong\documents\github\game\bai_9_am_thanh - copy\main.cpp
+	<SDL.h>
+	<bits/stdc++.h>
+	"defs.h"
+
+1712997528 c:\users\cuong\documents\github\game\bai_9_am_thanh - copy\graphics.h
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	"defs.h"
+
+1713087804 c:\users\cuong\documents\github\game\bai_9_am_thanh - copy\defs.h
+
+1713156141 source:c:\users\cuong\documents\github\game\th\main.cpp
+	<SDL.h>
+	<SDL_image.h>
+	<bits/stdc++.h>
+	"defs.h"
+	"object.h"
+	"graphics.h"
+
+1713156725 c:\users\cuong\documents\github\game\th\defs.h
+
+1713156820 c:\users\cuong\documents\github\game\th\object.h
+	<SDL.h>
+	<SDL_image.h>
+	<bits/stdc++.h>
+	"defs.h"
+
+1713155046 c:\users\cuong\documents\github\game\th\graphics.h
+
