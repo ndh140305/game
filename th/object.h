@@ -32,8 +32,8 @@ struct round_bullet
         radius = 5;
         hitbox.x = point_x;
         hitbox.y = point_y;
-        hitbox.w = 10;
-        hitbox.h = 10;
+        hitbox.w = 15;
+        hitbox.h = 15;
         speed.x = INTIAL_SPEED * cos(angle * M_PI / 180.0);
         speed.y = INTIAL_SPEED * sin(angle * M_PI / 180.0);
     }
@@ -55,9 +55,17 @@ struct round_bullet
         }
     }
 
-    void load_bullet(SDL_Renderer* renderer)
+    void load_bullet(SDL_Renderer* renderer , int type)
     {
-    texture = IMG_LoadTexture(renderer , "red_bullet.png");
+        switch (type){
+            case 0:
+                texture = IMG_LoadTexture(renderer , "red_bullet.png");
+                break;
+            case 1:
+                texture = IMG_LoadTexture(renderer , "green_bullet.png");
+                break;
+        }
+
     if (texture == NULL) {
         SDL_Log("Failed to load bullet texture: %s", IMG_GetError());
         }
@@ -84,6 +92,7 @@ struct Player
     SDL_Rect hitbox;
     Player()
     {
+        SDL_Texture* texture;
         hitbox.h = 30;
         hitbox.w = 15;
         hitbox.x = SCREEN_WIDTH/2 - hitbox.w/2;
@@ -132,7 +141,7 @@ vector<round_bullet> createBullets(int numBullets, int xOffset, int yOffset, dou
     vector<round_bullet> bullets;
     for (int i = 0; i < numBullets; ++i) {
         bullets.push_back(round_bullet(xOffset + i * 20, yOffset + i * 20 , angle * i));
-        bullets.back().load_bullet(renderer);
+        bullets.back().load_bullet(renderer , rand()%2);
     }
     return bullets;
 }
@@ -141,7 +150,7 @@ vector<round_bullet> createSpreadBullets(int numBullets, int xOffset, int yOffse
     vector<round_bullet> bullets;
     for (int i = 0; i < numBullets; i+=5) {
         bullets.push_back(round_bullet(xOffset, yOffset , (i/2 - i)/10 , (i/2 - i)/5 + 1));
-        bullets.back().load_bullet(renderer);
+        bullets.back().load_bullet(renderer , rand()%2);
     }
     return bullets;
 }
@@ -150,7 +159,7 @@ vector<round_bullet> createSpreadBullets(int numBullets, int xOffset, int yOffse
 void shootBullets(vector<round_bullet>& bullets, Player& player, SDL_Renderer* renderer, bool& END_GAME) {
     for (auto it = bullets.begin(); it != bullets.end(); ) {
         it->shoot();
-        it->load_bullet(renderer);
+        it->load_bullet(renderer , rand()%2);
         if (player.check_collision(*it))
         {
             END_GAME = true;

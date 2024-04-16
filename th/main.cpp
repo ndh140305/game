@@ -25,9 +25,11 @@ void waitUntilKeyPressed()
 int main(int argc , char* argv[])
 {
     Graphics graphics;
+    graphics.init();
     SDL_Window* window = initSDL(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE);
     SDL_Renderer* renderer = createRenderer(window);
-
+    ScrollingBackground background;
+    background.setTexture(IMG_LoadTexture(renderer , "background.jpg"));
     Player player;
 
     Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048);
@@ -37,13 +39,13 @@ int main(int argc , char* argv[])
     vector<round_bullet> bullets1;
     for (int i = 0; i < 30; ++i) {
         bullets1.push_back(round_bullet(i * 20, i * 20 , 10.0*i));
-        bullets1.back().load_bullet(renderer);
+        bullets1.back().load_bullet(renderer , rand()%2);
     }
 
     vector<round_bullet> bullets2;
     for (int i = 0; i < 30; ++i) {
         bullets1.push_back(round_bullet(SCREEN_WIDTH - i * 20, i * 20 , 10.0*i));
-        bullets1.back().load_bullet(renderer);
+        bullets1.back().load_bullet(renderer , rand()%2);
     }
 
     vector<round_bullet> bullets3 = createBullets(rand()%100, random_x, random_y, 1.0 * rand(), renderer);
@@ -53,8 +55,12 @@ int main(int argc , char* argv[])
     vector<round_bullet> bullets;
     for (double angle = 0; angle < 2 * M_PI; angle += 2 * M_PI / 10) {
         bullets.push_back(round_bullet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, angle));
-        bullets.back().load_bullet(renderer);
+        bullets.back().load_bullet(renderer , rand()%2);
     }
+
+    Sprite sprite;
+    SDL_Texture* manTexture = IMG_LoadTexture(renderer , "sprite.png");
+    sprite.init(manTexture, FRAMES, MOVES);
 
     waitUntilKeyPressed();
     SDL_Event e;
@@ -63,9 +69,10 @@ int main(int argc , char* argv[])
                  break;
              }
         SDL_RenderClear(renderer);
-        load_background(renderer);
+        //load_background(renderer);
+        background.scroll(1);
+        graphics.render(renderer , background);
         player.load_player(renderer);
-
         if (!GAME_START)
         {
             SDL_RenderPresent(renderer);
@@ -83,15 +90,20 @@ int main(int argc , char* argv[])
         if (bulletTimer >= BULLET_INTERVAL)
         {
              bullets3.push_back(round_bullet(rand() % SCREEN_WIDTH, 0 , (1*rand())%45 + 45));
-             bullets3.back().draw_bullet(renderer);
+             bullets3.back().load_bullet(renderer , rand()%2);
+             bullets3.push_back(round_bullet(rand() % SCREEN_WIDTH, 350 , (1*rand())%45 + 45));
+             bullets3.back().load_bullet(renderer , rand()%2);
+
              bulletTimer = 0;
         }
         shootBullets(bullets3, player, renderer, END_GAME);
-
+        sprite.tick();
+        render_sprite (renderer , 200  , 200 , sprite);
         SDL_RenderPresent(renderer);
         SDL_Delay(10);
 
     }
     if (music != nullptr) Mix_FreeMusic( music );
     cerr << "You lose! What a noob.";
+    graphics.quit();
 }

@@ -6,6 +6,57 @@
 #include <SDL_mixer.h>
 #include "defs.h"
 
+struct ScrollingBackground {
+    SDL_Texture* texture;
+    int scrollingOffset = 0;
+    int width, height;
+
+    void setTexture(SDL_Texture* _texture) {
+        texture = _texture;
+        SDL_QueryTexture(texture, NULL, NULL, &width, &height);
+    }
+
+    void scroll(int distance) {
+        scrollingOffset -= distance;
+        if( scrollingOffset < 0 )
+        {
+            scrollingOffset = height;
+        }
+    }
+
+};
+
+struct Sprite {
+    SDL_Texture* texture;
+    std::vector<SDL_Rect> clips;
+    int currentFrame = 0;
+
+    void init(SDL_Texture* _texture, int frames, const int _clips [][4]) {
+        texture = _texture;
+
+        SDL_Rect clip;
+        for (int i = 0; i < frames; i++) {
+            clip.x = _clips[i][0];
+            clip.y = _clips[i][1];
+            clip.w = _clips[i][2];
+            clip.h = _clips[i][3];
+            clips.push_back(clip);
+        }
+    }
+    void tick() {
+        currentFrame = (currentFrame + 1) % clips.size();
+    }
+
+    const SDL_Rect* getCurrentClip() const {
+        return &(clips[currentFrame]);
+    }
+};
+
+void render_sprite(SDL_Renderer* renderer , int x, int y, const Sprite& sprite) {
+        const SDL_Rect* clip = sprite.getCurrentClip();
+        SDL_Rect renderQuad = {x, y, clip->w, clip->h};
+        SDL_RenderCopy(renderer, sprite.texture, clip, &renderQuad);
+    }
 
 void logErrorAndExit(const char* msg, const char* error)
 {
@@ -157,7 +208,7 @@ struct Graphics {
         return texture;
     }
 
-    void renderTexture(SDL_Texture *texture, int x, int y)
+    void renderTexture(SDL_Renderer* _renderer , SDL_Texture *texture, int x, int y)
     {
         SDL_Rect dest;
 
@@ -165,7 +216,12 @@ struct Graphics {
         dest.y = y;
         SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
 
-        SDL_RenderCopy(renderer, texture, NULL, &dest);
+        SDL_RenderCopy(_renderer, texture, NULL, &dest);
+    }
+
+    void render(SDL_Renderer* _renderer ,const ScrollingBackground& background) {
+        renderTexture(_renderer , background.texture, 0 , background.scrollingOffset);
+        renderTexture(_renderer , background.texture, 0, background.scrollingOffset - background.height);
     }
 
     void quit()
