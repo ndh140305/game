@@ -59,10 +59,10 @@ struct round_bullet
     {
         switch (type){
             case 0:
-                texture = IMG_LoadTexture(renderer , "red_bullet.png");
+                texture = IMG_LoadTexture(renderer , "img//red_bullet.png");
                 break;
             case 1:
-                texture = IMG_LoadTexture(renderer , "green_bullet.png");
+                texture = IMG_LoadTexture(renderer , "img//green_bullet.png");
                 break;
         }
 
@@ -90,25 +90,27 @@ struct Player
 {
     SDL_Texture* texture;
     SDL_Rect hitbox;
-    Player()
+    vector <round_bullet*> bullets;
+    Uint32 lastShotTime;
+    Uint32 shotCooldown;
+    Player() : lastShotTime(0), shotCooldown(500)
     {
-        SDL_Texture* texture;
-        hitbox.h = 30;
-        hitbox.w = 15;
+        hitbox.h = 50;
+        hitbox.w = 50;
         hitbox.x = SCREEN_WIDTH/2 - hitbox.w/2;
         hitbox.y = SCREEN_HEIGHT - 100;
     }
 
-    void load_player(SDL_Renderer* renderer)
+    void render(SDL_Renderer* renderer)
     {
-        texture = IMG_LoadTexture(renderer , "player.png");
+        texture = IMG_LoadTexture(renderer , "img//player1.png");
         if (texture == NULL) {
         SDL_Log("Failed to load player texture: %s", IMG_GetError());
         }
     SDL_RenderCopy(renderer , texture , NULL , &hitbox );
     }
 
-    void keyboard_movement(SDL_Event event)
+    void keyboard_movement()
     {
          const Uint8 *keystate = SDL_GetKeyboardState(NULL);
          if (keystate[SDL_SCANCODE_UP] && hitbox.y >= 5)
@@ -121,6 +123,42 @@ struct Player
             hitbox.x += PLAYER_SPEED;
     }
 
+     void shoot_bullets(SDL_Renderer* renderer)
+    {
+        const Uint8 *keystate = SDL_GetKeyboardState(NULL);
+        Uint32 currentTime = SDL_GetTicks();
+
+        if (keystate[SDL_SCANCODE_X] && (currentTime - lastShotTime) >= shotCooldown)
+        {
+            round_bullet* bullet = new round_bullet(hitbox.x + hitbox.w / 2, hitbox.y, 0, -5);
+            bullet->load_bullet(renderer, 0);
+            bullets.push_back(bullet);
+            lastShotTime = currentTime;
+        }
+
+
+        for (auto it = bullets.begin(); it != bullets.end(); )
+        {
+            (*it)->shoot();
+            if ((*it)->isOutOfScreen())
+            {
+                delete *it;
+                it = bullets.erase(it);
+            }
+            else
+            {
+                SDL_RenderCopy(renderer, (*it)->texture, NULL, &(*it)->hitbox);
+                ++it;
+            }
+        }
+    }
+
+    void load(SDL_Renderer* renderer)
+    {
+        render(renderer);
+        keyboard_movement();
+        shoot_bullets(renderer);
+    }
 
     bool check_collision(round_bullet& bullet)
     {
@@ -132,6 +170,52 @@ struct Player
             return true;
         }
         return false;
+    }
+
+};
+
+struct Enemy
+{
+    SDL_Texture* texture;
+    SDL_Rect hitbox;
+    Enemy(int x , int y)
+    {
+        hitbox.x = x;
+        hitbox.y = y;
+        hitbox.w = 50;
+        hitbox.h = 50;
+    }
+    void load_enemy(SDL_Renderer* renderer)
+    {
+        texture = IMG_LoadTexture (renderer , "img//enemy1.png");
+        SDL_RenderCopy(renderer , texture , NULL , &hitbox);
+    }
+
+    void movement (int direction)
+    {
+        switch (direction)
+        {
+        case 0:
+            if (hitbox.x > SCREEN_WIDTH/6)
+                hitbox.x -= ENEMY_SPEED;
+
+            break;
+        case 1:
+            if (hitbox.x < SCREEN_WIDTH*5/6)
+                hitbox.x += ENEMY_SPEED;
+
+            break;
+        case 2:
+            if (hitbox.y > SCREEN_HEIGHT/6)
+                hitbox.y -= ENEMY_SPEED;
+
+            break;
+        case 3:
+            if (hitbox.y <SCREEN_HEIGHT/2)
+                hitbox.y += ENEMY_SPEED;
+
+            break;
+        }
     }
 
 };
@@ -148,30 +232,39 @@ vector<round_bullet> createBullets(int numBullets, int xOffset, int yOffset, dou
 
 vector<round_bullet> createSpreadBullets(int numBullets, int xOffset, int yOffset, SDL_Renderer* renderer) {
     vector<round_bullet> bullets;
-    for (int i = 0; i < numBullets; i+=5) {
-        bullets.push_back(round_bullet(xOffset, yOffset , (i/2 - i)/10 , (i/2 - i)/5 + 1));
+    int x = 2;
+    for (int i = 0; i < numBullets; i++) {
+        bullets.push_back(round_bullet(xOffset, yOffset , x , x*x+1));
         bullets.back().load_bullet(renderer , rand()%2);
     }
     return bullets;
 }
 
 
-void shootBullets(vector<round_bullet>& bullets, Player& player, SDL_Renderer* renderer, bool& END_GAME) {
-    for (auto it = bullets.begin(); it != bullets.end(); ) {
-        it->shoot();
-        it->load_bullet(renderer , rand()%2);
-        if (player.check_collision(*it))
+void shootBullets(vector<round_bullet*>& bullets, Player& player, SDL_Renderer* renderer) {
+    for (auto it = bullets.begin(); it != bullets.end(); )
         {
-            END_GAME = true;
-            break;
+            (*it)->shoot();
+            if ((player.check_collision(**it)))
+            {
+                END_GAME = true;
+            }
+
+            if ((*it)->isOutOfScreen())
+            {
+                delete *it;
+                it = bullets.erase(it);
+            }
+            else
+            {
+                SDL_RenderCopy(renderer, (*it)->texture, NULL, &(*it)->hitbox);
+                ++it;
+            }
         }
-        if (it->isOutOfScreen()) {
-            it = bullets.erase(it);
-        } else {
-            ++it;
-        }
-    }
 }
+
+
+
 
 
 

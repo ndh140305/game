@@ -1,12 +1,9 @@
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <bits/stdc++.h>
-
 #include "defs.h"
 #include "object.h"
 #include "graphics.h"
-
+#include "sounds.h"
+#include "background.h"
+#include "sprite.h"
 
 using namespace std;
 
@@ -24,86 +21,43 @@ void waitUntilKeyPressed()
 
 int main(int argc , char* argv[])
 {
-    Graphics graphics;
-    graphics.init();
     SDL_Window* window = initSDL(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE);
     SDL_Renderer* renderer = createRenderer(window);
-    ScrollingBackground background;
-    background.setTexture(IMG_LoadTexture(renderer , "background.jpg"));
+
+    ScrollingBackground bg = create_bg(renderer);
+
     Player player;
+    Enemy enemy (400 , 100);
+    load_BGM();
+    load_sprite(renderer);
 
-    Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    Mix_Music* music = graphics.loadMusic("SFF.mp3");
-    graphics.play(music);
-
-    vector<round_bullet> bullets1;
-    for (int i = 0; i < 30; ++i) {
-        bullets1.push_back(round_bullet(i * 20, i * 20 , 10.0*i));
-        bullets1.back().load_bullet(renderer , rand()%2);
-    }
-
-    vector<round_bullet> bullets2;
-    for (int i = 0; i < 30; ++i) {
-        bullets1.push_back(round_bullet(SCREEN_WIDTH - i * 20, i * 20 , 10.0*i));
-        bullets1.back().load_bullet(renderer , rand()%2);
-    }
-
-    vector<round_bullet> bullets3 = createBullets(rand()%100, random_x, random_y, 1.0 * rand(), renderer);
-    vector<round_bullet> bullets4 = createSpreadBullets(100, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, renderer);
-
-
-    vector<round_bullet> bullets;
-    for (double angle = 0; angle < 2 * M_PI; angle += 2 * M_PI / 10) {
-        bullets.push_back(round_bullet(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, angle));
-        bullets.back().load_bullet(renderer , rand()%2);
-    }
-
-    Sprite sprite;
-    SDL_Texture* manTexture = IMG_LoadTexture(renderer , "sprite.png");
-    sprite.init(manTexture, FRAMES, MOVES);
-
+    vector<round_bullet> bullets = createBullets(10 , rand() % SCREEN_WIDTH , rand() % SCREEN_HEIGHT , rand() % 90 + 45 , renderer);
     waitUntilKeyPressed();
     SDL_Event e;
     while (!END_GAME) {
-        if ( SDL_PollEvent(&e) != 0 && (e.type == SDL_QUIT) ){
+        if ( SDL_PollEvent(&e) != 0 && e.type == SDL_QUIT ){
                  break;
              }
-        SDL_RenderClear(renderer);
-        //load_background(renderer);
-        background.scroll(1);
-        graphics.render(renderer , background);
-        player.load_player(renderer);
-        if (!GAME_START)
-        {
-            SDL_RenderPresent(renderer);
-            waitUntilKeyPressed();
-            GAME_START = true;
-        }
-
-        player.keyboard_movement(e);
-
-        //shootBullets(bullets3, player, renderer, END_GAME);
-        shootBullets(bullets4, player, renderer, END_GAME);
-
+        load_bg(renderer , bg);
+        player.load(renderer);
+        enemy.load_enemy(renderer);
+        enemy.movement(rand()%4);
        bulletTimer++;
 
         if (bulletTimer >= BULLET_INTERVAL)
         {
-             bullets3.push_back(round_bullet(rand() % SCREEN_WIDTH, 0 , (1*rand())%45 + 45));
-             bullets3.back().load_bullet(renderer , rand()%2);
-             bullets3.push_back(round_bullet(rand() % SCREEN_WIDTH, 350 , (1*rand())%45 + 45));
-             bullets3.back().load_bullet(renderer , rand()%2);
-
-             bulletTimer = 0;
+             /*bullets.push_back(round_bullet(rand() % SCREEN_WIDTH, 0 , (1*rand())%45 + 45));
+             bullets.back().load_bullet(renderer , 0);
+             bullets.push_back(round_bullet(rand() % SCREEN_WIDTH, 350 , (1*rand())%45 + 45));
+             bullets.back().load_bullet(renderer , 0);
+             bulletTimer = 0;*/
         }
-        shootBullets(bullets3, player, renderer, END_GAME);
-        sprite.tick();
-        render_sprite (renderer , 200  , 200 , sprite);
-        SDL_RenderPresent(renderer);
-        SDL_Delay(10);
 
+        //shootBullets(bullets , player , renderer);
+
+        SDL_RenderPresent(renderer);
     }
-    if (music != nullptr) Mix_FreeMusic( music );
     cerr << "You lose! What a noob.";
-    graphics.quit();
+    quit(renderer , window);
+    return 0;
 }
