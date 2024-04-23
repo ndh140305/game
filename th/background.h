@@ -41,11 +41,10 @@ ScrollingBackground create_bg(SDL_Renderer* renderer)
     return background;
 }
 
-
 void load_bg(SDL_Renderer* renderer , ScrollingBackground& background)
 {
     SDL_RenderClear(renderer);
-    background.scroll(1);
+    background.scroll(2);
     render(renderer , background);
 }
 #endif // __BACKGROUND_H

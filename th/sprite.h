@@ -18,6 +18,7 @@ struct Sprite {
             clips.push_back(clip);
         }
     }
+
     void tick() {
         currentFrame = (currentFrame + 1) % clips.size();
     }

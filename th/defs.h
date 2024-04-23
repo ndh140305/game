@@ -3,13 +3,15 @@
 
 const int radius = 100;
 const int SCREEN_WIDTH = 700;
+const int MENU_WIDTH = 200;
 const int SCREEN_HEIGHT = 700;
 
 const char* WINDOW_TITLE = "test";
 
-const int INTIAL_SPEED = 5;
+const int ENEMY_BULLET_SPEED = 2;
+const int PLAYER_BULLET_SPEED = 5;
 const int PLAYER_SPEED = 5;
-const int ENEMY_SPEED = 10;
+const int ENEMY_SPEED = 20;
 
 bool END_GAME = false;
 bool GAME_START = false;
@@ -17,7 +19,7 @@ bool COLLISION_ON = false;
 
 
 int bulletTimer = 0;
-const int BULLET_INTERVAL = 10;
+const int BULLET_INTERVAL = 200;
 
 const int MOVES[][4] = {
     {2, 47, 20, 45},

@@ -11,31 +11,20 @@ using namespace std;
 
 struct round_bullet
 {
+
+    bool isActive = true;
+    int frame = 0;
     SDL_Texture* texture;
-    SDL_Rect hitbox;
-    SDL_Point speed;
+    SDL_FRect hitbox;
+    SDL_FPoint speed;
     int radius;
 
-    round_bullet (int point_x , int point_y , int speed_x, int speed_y )
+    round_bullet (int XOffset , int YOffset , float speed1 , double angle)
     {
         radius = 5;
-        hitbox.x = point_x;
-        hitbox.y = point_y;
-        hitbox.w = 10;
-        hitbox.h = 10;
-        speed.x = speed_x;
-        speed.y = speed_y;
-    }
-
-    round_bullet (int point_x , int point_y , double angle)
-    {
-        radius = 5;
-        hitbox.x = point_x;
-        hitbox.y = point_y;
-        hitbox.w = 15;
-        hitbox.h = 15;
-        speed.x = INTIAL_SPEED * cos(angle * M_PI / 180.0);
-        speed.y = INTIAL_SPEED * sin(angle * M_PI / 180.0);
+        hitbox = {XOffset , YOffset , 15 , 15};
+        speed.x = 1.0 * speed1 * cosf(angle * M_PI / 180.0);
+        speed.y = 1.0 * speed1 * sinf(angle * M_PI / 180.0);
     }
 
     void draw_bullet(SDL_Renderer* renderer)
@@ -69,7 +58,7 @@ struct round_bullet
     if (texture == NULL) {
         SDL_Log("Failed to load bullet texture: %s", IMG_GetError());
         }
-    SDL_RenderCopy(renderer , texture , NULL , &hitbox );
+    SDL_RenderCopyF(renderer , texture , NULL , &hitbox );
     }
 
     void shoot()
@@ -90,6 +79,7 @@ struct Player
 {
     SDL_Texture* texture;
     SDL_Rect hitbox;
+    bool isMoving = false;
     vector <round_bullet*> bullets;
     Uint32 lastShotTime;
     Uint32 shotCooldown;
@@ -100,27 +90,39 @@ struct Player
         hitbox.x = SCREEN_WIDTH/2 - hitbox.w/2;
         hitbox.y = SCREEN_HEIGHT - 100;
     }
-
-    void render(SDL_Renderer* renderer)
+    void load_texture (SDL_Renderer* renderer)
     {
         texture = IMG_LoadTexture(renderer , "img//player1.png");
-        if (texture == NULL) {
-        SDL_Log("Failed to load player texture: %s", IMG_GetError());
+        if (texture == NULL)
+        {
+            SDL_Log("Failed to load player texture: %s", IMG_GetError());
         }
-    SDL_RenderCopy(renderer , texture , NULL , &hitbox );
+    }
+    void render(SDL_Renderer* renderer)
+    {
+        if (isMoving == true)
+        {
+            SDL_RenderCopy(renderer , texture , NULL , &hitbox );
+            isMoving = false;
+        }
     }
 
     void keyboard_movement()
     {
-         const Uint8 *keystate = SDL_GetKeyboardState(NULL);
-         if (keystate[SDL_SCANCODE_UP] && hitbox.y >= 5)
+        const Uint8 *keystate = SDL_GetKeyboardState(NULL);
+
+        if (keystate[SDL_SCANCODE_UP] && hitbox.y >= 5)
             hitbox.y -= PLAYER_SPEED;
-         if (keystate[SDL_SCANCODE_DOWN] && hitbox.y <= SCREEN_HEIGHT - hitbox.h - 5)
+            isMoving = true;
+        if (keystate[SDL_SCANCODE_DOWN] && hitbox.y <= SCREEN_HEIGHT - hitbox.h - 5)
             hitbox.y += PLAYER_SPEED;
-         if (keystate[SDL_SCANCODE_LEFT] && hitbox.x >= 5)
+            isMoving = true;
+        if (keystate[SDL_SCANCODE_LEFT] && hitbox.x >= 5)
             hitbox.x -= PLAYER_SPEED;
-         if (keystate[SDL_SCANCODE_RIGHT] && hitbox.x <= SCREEN_WIDTH - hitbox.w - 5)
+            isMoving = true;
+        if (keystate[SDL_SCANCODE_RIGHT] && hitbox.x <= SCREEN_WIDTH - hitbox.w - 5)
             hitbox.x += PLAYER_SPEED;
+            isMoving = true;
     }
 
      void shoot_bullets(SDL_Renderer* renderer)
@@ -130,7 +132,7 @@ struct Player
 
         if (keystate[SDL_SCANCODE_X] && (currentTime - lastShotTime) >= shotCooldown)
         {
-            round_bullet* bullet = new round_bullet(hitbox.x + hitbox.w / 2, hitbox.y, 0, -5);
+            round_bullet* bullet = new round_bullet(hitbox.x + hitbox.w / 2, hitbox.y, PLAYER_BULLET_SPEED , 270);
             bullet->load_bullet(renderer, 0);
             bullets.push_back(bullet);
             lastShotTime = currentTime;
@@ -147,7 +149,7 @@ struct Player
             }
             else
             {
-                SDL_RenderCopy(renderer, (*it)->texture, NULL, &(*it)->hitbox);
+                SDL_RenderCopyF(renderer, (*it)->texture, NULL, &(*it)->hitbox);
                 ++it;
             }
         }
@@ -176,24 +178,27 @@ struct Player
 
 struct Enemy
 {
+    int frame = 0;
+    int health = 100;
     SDL_Texture* texture;
     SDL_Rect hitbox;
     Enemy(int x , int y)
     {
-        hitbox.x = x;
-        hitbox.y = y;
-        hitbox.w = 50;
-        hitbox.h = 50;
+        hitbox = {x , y , 50 , 50};
     }
-    void load_enemy(SDL_Renderer* renderer)
+    void load_texture (SDL_Renderer* renderer)
     {
         texture = IMG_LoadTexture (renderer , "img//enemy1.png");
+    }
+    void render(SDL_Renderer* renderer)
+    {
         SDL_RenderCopy(renderer , texture , NULL , &hitbox);
     }
 
     void movement (int direction)
     {
-        switch (direction)
+        if (frame > 10){
+            switch (direction)
         {
         case 0:
             if (hitbox.x > SCREEN_WIDTH/6)
@@ -211,61 +216,65 @@ struct Enemy
 
             break;
         case 3:
-            if (hitbox.y <SCREEN_HEIGHT/2)
+            if (hitbox.y <SCREEN_HEIGHT/5*3)
                 hitbox.y += ENEMY_SPEED;
 
             break;
         }
-    }
-
-};
-void normal_shot (int x , int y);
-
-vector<round_bullet> createBullets(int numBullets, int xOffset, int yOffset, double angle, SDL_Renderer* renderer) {
-    vector<round_bullet> bullets;
-    for (int i = 0; i < numBullets; ++i) {
-        bullets.push_back(round_bullet(xOffset + i * 20, yOffset + i * 20 , angle * i));
-        bullets.back().load_bullet(renderer , rand()%2);
-    }
-    return bullets;
-}
-
-vector<round_bullet> createSpreadBullets(int numBullets, int xOffset, int yOffset, SDL_Renderer* renderer) {
-    vector<round_bullet> bullets;
-    int x = 2;
-    for (int i = 0; i < numBullets; i++) {
-        bullets.push_back(round_bullet(xOffset, yOffset , x , x*x+1));
-        bullets.back().load_bullet(renderer , rand()%2);
-    }
-    return bullets;
-}
-
-
-void shootBullets(vector<round_bullet*>& bullets, Player& player, SDL_Renderer* renderer) {
-    for (auto it = bullets.begin(); it != bullets.end(); )
-        {
-            (*it)->shoot();
-            if ((player.check_collision(**it)))
-            {
-                END_GAME = true;
-            }
-
-            if ((*it)->isOutOfScreen())
-            {
-                delete *it;
-                it = bullets.erase(it);
-            }
-            else
-            {
-                SDL_RenderCopy(renderer, (*it)->texture, NULL, &(*it)->hitbox);
-                ++it;
-            }
+        frame = 0;
         }
+        frame++;
+    }
+};
+
+vector<round_bullet> createSpreadBullets(int xOffset, int yOffset, SDL_Renderer* renderer) {
+    vector<round_bullet> bullets;
+    for (int i = 0; i <= 35; i++)
+    {
+        bullets.push_back(round_bullet(xOffset, yOffset ,ENEMY_BULLET_SPEED , 0 + 10*i));
+        bullets.push_back(round_bullet(xOffset, yOffset ,ENEMY_BULLET_SPEED + 1 , 0 + 10*i));
+        bullets.push_back(round_bullet(xOffset, yOffset ,ENEMY_BULLET_SPEED + 2 , 0 + 10*i));
+    }
+    return bullets;
 }
 
+vector<round_bullet> createFastBullets(float xOffset, float yOffset, SDL_Renderer* renderer , float targetX , float targetY)
+{
+    vector<round_bullet> bullets;
+    float angle = 1.0 * atan((targetY - yOffset) / (targetX - xOffset)) + 90;
+    for (int i=1 ; i<=10 ; ++i)
+    {
+        bullets.push_back(round_bullet(xOffset , yOffset , 1.0*i , angle));
+    }
+    return bullets;
+}
 
-
-
-
+void reloadBullets (int xOffset , int yOffset , vector<round_bullet>& bullets)
+{
+    for (round_bullet& i: bullets)
+    {
+        i.hitbox.x = xOffset;
+        i.hitbox.y = yOffset;
+    }
+}
+void shootBullets(vector<round_bullet>& bullets, Player& player, SDL_Renderer* renderer) {
+    for (auto it = bullets.begin(); it != bullets.end(); ) {
+        if (!it->isOutOfScreen())
+        {
+            it->shoot();
+            it->draw_bullet(renderer);
+        }
+        if (player.check_collision(*it))
+        {
+            END_GAME = true;
+            break;
+        }
+        /*
+        else {
+            ++it;
+        }*/
+        ++it;
+    }
+}
 
 #endif // __OBJECT_H
