@@ -34,8 +34,10 @@
 		</Compiler>
 		<Unit filename="background.h" />
 		<Unit filename="defs.h" />
+		<Unit filename="gamestates.h" />
 		<Unit filename="graphics.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="menu.h" />
 		<Unit filename="object.h" />
 		<Unit filename="player.h" />
 		<Unit filename="sounds.h" />

@@ -1,6 +1,7 @@
 #ifndef __SOUNDS_H
 #define __SOUNDS_H
 
+#include <SDL_mixer.h>
 Mix_Music* loadMusic(const char* path)
 {
     Mix_Music *gMusic = Mix_LoadMUS(path);
@@ -9,8 +10,7 @@ Mix_Music* loadMusic(const char* path)
             SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION,
                            SDL_LOG_PRIORITY_ERROR,
                 "Could not load music! SDL_mixer Error: %s", Mix_GetError());
-
-        }
+            }
         return gMusic;
 }
 
@@ -51,7 +51,7 @@ void play(Mix_Chunk* gChunk)
 void load_BGM()
 {
     Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    Mix_Music* music = loadMusic("sounds//SFF.mp3");
+    Mix_Music* music = loadMusic("sounds//music.mp3");
     play(music);
 }
 

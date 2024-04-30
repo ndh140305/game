@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     Graphics graphics;
     graphics.init();
 
-    TTF_Font* font = graphics.loadFont("Purisa-BoldOblique.ttf", 100);
+    TTF_Font* font = graphics.loadFont("fonts.ttf", 100);
 
     SDL_Color color = {255, 255, 0, 0};
     SDL_Texture* helloText = graphics.renderText("Hello", font, color);

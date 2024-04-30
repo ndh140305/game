@@ -3,3 +3,19 @@
 	<iostream>
 	<SDL.h>
 
+1713558470 source:c:\users\cuong\documents\github\game\bai_10_text\main.cpp
+	<iostream>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_ttf.h>
+	"graphics.h"
+	"defs.h"
+
+1713558432 c:\users\cuong\documents\github\game\bai_10_text\graphics.h
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_ttf.h>
+	"defs.h"
+
+1713558432 c:\users\cuong\documents\github\game\bai_10_text\defs.h
+

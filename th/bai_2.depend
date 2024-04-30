@@ -1,6 +1,0 @@
-# depslib dependency file v1.0
-1710216987 source:c:\users\cuong\documents\github\game\bai_2\main.cpp
-	<iostream>
-	<SDL.h>
-	<SDL_image.h>
-
