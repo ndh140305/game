@@ -32,7 +32,7 @@ struct Button
 vector<Button> create_menu(SDL_Renderer* renderer)
 {
     vector<Button> menu;
-    menu.push_back (Button(720 , 100 , 100 , 30 ));
+    menu.push_back (Button(720 , 100 , 200 , 30 ));
     menu.push_back (Button(740 , 150 , 100 , 30 ));
     menu.push_back (Button(750 , 200 , 100 , 30 ));
     menu.push_back (Button(770 , 50 , 100 , 100 ));
@@ -46,7 +46,7 @@ vector<Button> create_menu(SDL_Renderer* renderer)
 
 void show_menu(vector<Button> &menu , SDL_Renderer* renderer)
 {
-    if (score != prevScore)
+    if ((score != prevScore || score ==0) && !PAUSE )
     {
             menu[3].name((to_string(score)).c_str() , renderer );
     }
@@ -56,7 +56,7 @@ void show_menu(vector<Button> &menu , SDL_Renderer* renderer)
     }
 }
 
-void click_button (SDL_Event &event , vector<Button> &buttons)
+void click_button (SDL_Event &event , vector<Button> &buttons , Player& player , Enemy& enemy , vector<round_bullet>& bullets)
 {
     int a;
     int b;
@@ -64,7 +64,8 @@ void click_button (SDL_Event &event , vector<Button> &buttons)
     SDL_PollEvent(&event);
     for (Button& i: buttons)
     {
-        if (event.type == SDL_MOUSEBUTTONDOWN && (a > i.hitbox.x && a < i.hitbox.x + i.hitbox.w && b > i.hitbox.y && b < i.hitbox.y + i.hitbox.h)) {
+        if (event.type == SDL_MOUSEBUTTONDOWN && (a > i.hitbox.x && a < i.hitbox.x + i.hitbox.w && b > i.hitbox.y && b < i.hitbox.y + i.hitbox.h))
+        {
                 if (i.text == "Exit")
                 {
                     END_GAME = true;
@@ -77,7 +78,15 @@ void click_button (SDL_Event &event , vector<Button> &buttons)
                 }
                 else if (i.text == "New Game")
                 {
+                    cout << "New Game clicked" << endl;
                     score = 0;
+                    player.hitbox.x = SCREEN_WIDTH/2;
+                    player.hitbox.y = SCREEN_HEIGHT - 50;
+                    enemy.hitbox.x = 400;
+                    enemy.hitbox.y = 100;
+                    enemy.health = ENEMY_HEALTH;
+                    reloadBullets(enemy.hitbox.x , enemy.hitbox.y , bullets);
+                    PAUSE = false;
                 }
         }
     }

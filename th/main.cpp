@@ -15,7 +15,7 @@ int main(int argc , char* argv[])
     ScrollingBackground bg = create_bg(renderer);
     vector<Button> menu = create_menu(renderer);
     Player player;
-    Enemy enemy (400 , 100 , 100);
+    Enemy enemy;
     player.load_texture(renderer);
     enemy.load_texture(renderer);
     load_BGM();
@@ -33,24 +33,25 @@ int main(int argc , char* argv[])
         if (!PAUSE)
         {
             load_bg(renderer , bg);
-            player.load(renderer , enemy);
             enemy.render(renderer);
             enemy.movement(rand()%4);
-
-        bulletTimer++;
-
-        shootBullets(bullets , player , renderer);
-        if (bulletTimer >= BULLET_INTERVAL)
-        {
-            reloadBullets(enemy.hitbox.x , enemy.hitbox.y , bullets);
-            bulletTimer = 0;
-        }
+            shootBullets(bullets , player , renderer);
+            player.load(renderer , enemy);
+            bulletTimer++;
+            if (bulletTimer >= BULLET_INTERVAL)
+            {
+                reloadBullets(enemy.hitbox.x , enemy.hitbox.y , bullets);
+                bulletTimer = 0;
+            }
         }
         show_menu(menu , renderer);
-        click_button(e , menu);
+        click_button(e , menu , player , enemy , bullets);
 
         SDL_RenderPresent(renderer);
     }
+
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
     quit(renderer , window);
     return 0;
 }

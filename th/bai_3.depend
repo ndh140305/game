@@ -47,7 +47,7 @@
 
 1713087804 c:\users\cuong\documents\github\game\bai_9_am_thanh - copy\defs.h
 
-1714490925 source:c:\users\cuong\documents\github\game\th\main.cpp
+1714557163 source:c:\users\cuong\documents\github\game\th\main.cpp
 	"defs.h"
 	"object.h"
 	"graphics.h"
@@ -56,13 +56,14 @@
 	"menu.h"
 	"SDL_ttf.h"
 
-1714490119 c:\users\cuong\documents\github\game\th\defs.h
+1714558954 c:\users\cuong\documents\github\game\th\defs.h
 
-1714489938 c:\users\cuong\documents\github\game\th\object.h
+1714558985 c:\users\cuong\documents\github\game\th\object.h
 	<vector>
 	<SDL.h>
 	<SDL_image.h>
 	<bits/stdc++.h>
+	"graphics.h"
 	"defs.h"
 	"sounds.h"
 
@@ -76,14 +77,14 @@
 1714405415 c:\users\cuong\documents\github\game\th\sounds.h
 	<SDL_mixer.h>
 
-1713868101 c:\users\cuong\documents\github\game\th\background.h
+1714558954 c:\users\cuong\documents\github\game\th\background.h
 
 1713788507 c:\users\cuong\documents\github\game\th\sprite.h
 
 1713787407 c:\users\cuong\documents\github\game\th\logic.h
 	"SDL.h"
 
-1714490906 c:\users\cuong\documents\github\game\th\menu.h
+1714559237 c:\users\cuong\documents\github\game\th\menu.h
 	<SDL.h>
 	<SDL_ttf.h>
 	<SDL_image.h>

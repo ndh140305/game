@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <bits/stdc++.h>
+#include "graphics.h"
 #include "defs.h"
 #include "sounds.h"
 
@@ -75,10 +76,11 @@ struct Enemy
     int health;
     SDL_Texture* texture;
     SDL_Rect hitbox;
-    Enemy(int x , int y , int h)
+    Enemy()
     {
-        hitbox = {x , y , 50 , 50};
-        health = h;
+        hitbox = {400 , 100 , 50 , 50};
+        health = ENEMY_HEALTH;
+
     }
     void load_texture (SDL_Renderer* renderer)
     {
@@ -119,7 +121,7 @@ struct Enemy
         }
         frame++;
     }
-    bool check_collision(round_bullet& bullet)
+    bool check_collision(round_bullet& bullet , SDL_Renderer* renderer)
     {
         prevScore = score;
         if (hitbox.x < bullet.hitbox.x + bullet.hitbox.w &&
@@ -130,11 +132,12 @@ struct Enemy
             health -=5;
             if (health <= 0)
             {
-                END_GAME = true;
+                PAUSE = true;
+                SDL_Texture* win = IMG_LoadTexture (renderer , "img//win.jpg");
+                renderTexture(renderer , win , 0 , 0);
+
             }
             score+=10;
-
-            cerr << health << " " << score << endl ;
             return true;
         }
         return false;
@@ -207,7 +210,7 @@ struct Player
         for (auto it = bullets.begin(); it != bullets.end(); )
         {
             (*it)->shoot();
-            if ((*it)->isOutOfScreen() || enemy.check_collision(**it))
+            if ((*it)->isOutOfScreen() || enemy.check_collision(**it , renderer))
             {
                 delete *it;
                 it = bullets.erase(it);
@@ -269,7 +272,9 @@ void shootBullets(vector<round_bullet>& bullets, Player& player, SDL_Renderer* r
         }
         if (player.check_collision(*it))
         {
-            END_GAME = true;
+            PAUSE = true;
+            SDL_Texture* lose = IMG_LoadTexture(renderer , "img//lose.jpg");
+            renderTexture(renderer , lose , 0 , 0);
             break;
         }
         ++it;
