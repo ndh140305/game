@@ -4,7 +4,7 @@
 
 2. Game em làm thuộc thể loại bắn súng. Nhân vật có nhiệm vụ né tránh các viên đạn, đồng thời tìm cách tiêu diệt kẻ thù;
 
-3. Ngưỡng điểm em mong muốn là 7.5 - 8.5;
+3. Ngưỡng điểm em mong muốn là 7.5;
 
 4. Đây là game em tự viết với đồ họa đơn giản (2), trong đó em đã học và áp dụng những kỹ thuật sau, dựa trên tài liệu học đã được cung cấp:
 - Chia project thành nhiều file để tiện quản lý;
