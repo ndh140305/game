@@ -21,8 +21,6 @@ int main(int argc , char* argv[])
     load_BGM();
 
     vector<round_bullet> bullets = createSpreadBullets (SCREEN_WIDTH/2 , SCREEN_HEIGHT/5 , renderer);
-
-
     waitUntilKeyPressed();
     SDL_Event e;
     while (!END_GAME) {
@@ -44,14 +42,12 @@ int main(int argc , char* argv[])
                 bulletTimer = 0;
             }
         }
+
         show_menu(menu , renderer);
         click_button(e , menu , player , enemy , bullets);
 
         SDL_RenderPresent(renderer);
     }
-
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
     quit(renderer , window);
     return 0;
 }

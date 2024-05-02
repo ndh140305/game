@@ -2,9 +2,10 @@
 #define __OBJECT_H
 
 #include <vector>
+#include <iostream>
+#include <math.h>
 #include <SDL.h>
 #include <SDL_image.h>
-#include <bits/stdc++.h>
 #include "graphics.h"
 #include "defs.h"
 #include "sounds.h"
@@ -75,6 +76,7 @@ struct Enemy
     int frame = 0;
     int health;
     SDL_Texture* texture;
+    SDL_Texture* win;
     SDL_Rect hitbox;
     Enemy()
     {
@@ -84,6 +86,7 @@ struct Enemy
     }
     void load_texture (SDL_Renderer* renderer)
     {
+        win = IMG_LoadTexture (renderer , "img//win.jpg");
         texture = IMG_LoadTexture (renderer , "img//enemy1.png");
     }
     void render(SDL_Renderer* renderer)
@@ -133,7 +136,6 @@ struct Enemy
             if (health <= 0)
             {
                 PAUSE = true;
-                SDL_Texture* win = IMG_LoadTexture (renderer , "img//win.jpg");
                 renderTexture(renderer , win , 0 , 0);
 
             }
@@ -147,6 +149,7 @@ struct Enemy
 struct Player
 {
     SDL_Texture* texture;
+    SDL_Texture* lose;
     SDL_Rect hitbox;
     bool isMoving = false;
     Mix_Chunk* sound = loadSound("sounds//bullet_sound.mp3");
@@ -161,6 +164,7 @@ struct Player
     }
     void load_texture (SDL_Renderer* renderer)
     {
+        lose = IMG_LoadTexture(renderer , "img//lose.jpg");
         texture = IMG_LoadTexture(renderer , "img//player1.png");
         if (texture == NULL)
         {
@@ -212,6 +216,7 @@ struct Player
             (*it)->shoot();
             if ((*it)->isOutOfScreen() || enemy.check_collision(**it , renderer))
             {
+                SDL_DestroyTexture((*it)->texture);
                 delete *it;
                 it = bullets.erase(it);
             }
@@ -273,8 +278,7 @@ void shootBullets(vector<round_bullet>& bullets, Player& player, SDL_Renderer* r
         if (player.check_collision(*it))
         {
             PAUSE = true;
-            SDL_Texture* lose = IMG_LoadTexture(renderer , "img//lose.jpg");
-            renderTexture(renderer , lose , 0 , 0);
+            renderTexture(renderer , player.lose , 0 , 0);
             break;
         }
         ++it;

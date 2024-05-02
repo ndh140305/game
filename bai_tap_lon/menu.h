@@ -21,6 +21,8 @@ struct Button
     void name (const char* _text , SDL_Renderer* renderer)
     {
         text = _text;
+        SDL_DestroyTexture(texture);
+
         texture = renderText (_text , font , black , renderer);
     }
     void render (SDL_Renderer* renderer)

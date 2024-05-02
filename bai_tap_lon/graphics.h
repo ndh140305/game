@@ -7,7 +7,6 @@
 #include <SDL_ttf.h>
 #include "defs.h"
 
-
 void waitUntilKeyPressed()
 {
     SDL_Event e;
