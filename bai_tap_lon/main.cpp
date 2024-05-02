@@ -23,18 +23,23 @@ int main(int argc , char* argv[])
     vector<round_bullet> bullets = createSpreadBullets (SCREEN_WIDTH/2 , SCREEN_HEIGHT/5 , renderer);
     waitUntilKeyPressed();
     SDL_Event e;
-    while (!END_GAME) {
-        if ( SDL_PollEvent(&e) != 0 && e.type == SDL_QUIT ){
-                 break;
-             }
+    while (!END_GAME)
+    {
+        if ( SDL_PollEvent(&e) != 0 && e.type == SDL_QUIT )
+        {
+            break;
+        }
 
         if (!PAUSE)
         {
             load_bg(renderer , bg);
             enemy.render(renderer);
             enemy.movement(rand()%4);
+
             shootBullets(bullets , player , renderer);
             player.load(renderer , enemy);
+
+
             bulletTimer++;
             if (bulletTimer >= BULLET_INTERVAL)
             {

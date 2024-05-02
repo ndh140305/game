@@ -246,7 +246,6 @@ struct Player
         }
         return false;
     }
-
 };
 
 vector<round_bullet> createSpreadBullets(int xOffset, int yOffset, SDL_Renderer* renderer) {

@@ -88,6 +88,12 @@ void click_button (SDL_Event &event , vector<Button> &buttons , Player& player ,
                     enemy.hitbox.y = 100;
                     enemy.health = ENEMY_HEALTH;
                     reloadBullets(enemy.hitbox.x , enemy.hitbox.y , bullets);
+                    for (auto it = player.bullets.begin(); it != player.bullets.end();)
+                    {
+                        SDL_DestroyTexture((*it)->texture);
+                        delete *it;
+                        it = player.bullets.erase(it);
+                    }
                     PAUSE = false;
                 }
         }
