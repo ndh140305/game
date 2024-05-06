@@ -66,6 +66,7 @@ TTF_Font* loadFont(const char* path, int size)
         if (gFont == nullptr) {
             SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Load font %s", TTF_GetError());
         }
+        return gFont;
     }
 
 SDL_Texture* renderText(const char* text, TTF_Font* font, SDL_Color textColor , SDL_Renderer* renderer)

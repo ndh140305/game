@@ -73,7 +73,7 @@ void click_button (SDL_Event &event , vector<Button> &buttons , Player& player ,
                     END_GAME = true;
                     cout << "Exit clicked" << endl;
                 }
-                else if (i.text == "Pause")
+                else if (!IS_LOSING && i.text == "Pause")
                 {
                     PAUSE = (PAUSE) ? false : true;
                     cout << "Pause clicked" << endl;
@@ -87,13 +87,14 @@ void click_button (SDL_Event &event , vector<Button> &buttons , Player& player ,
                     enemy.hitbox.x = 400;
                     enemy.hitbox.y = 100;
                     enemy.health = ENEMY_HEALTH;
-                    reloadBullets(enemy.hitbox.x , enemy.hitbox.y , bullets);
+                    reload_bullets(enemy.hitbox.x , enemy.hitbox.y , bullets);
                     for (auto it = player.bullets.begin(); it != player.bullets.end();)
                     {
                         SDL_DestroyTexture((*it)->texture);
                         delete *it;
                         it = player.bullets.erase(it);
                     }
+                    IS_LOSING = false;
                     PAUSE = false;
                 }
         }

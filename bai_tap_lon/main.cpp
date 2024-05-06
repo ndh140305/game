@@ -11,7 +11,7 @@ int main(int argc , char* argv[])
 {
     SDL_Window* window = initSDL(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE);
     SDL_Renderer* renderer = createRenderer(window);
-    Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048);
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
     ScrollingBackground bg = create_bg(renderer);
     vector<Button> menu = create_menu(renderer);
     Player player;
@@ -20,7 +20,7 @@ int main(int argc , char* argv[])
     enemy.load_texture(renderer);
     load_BGM();
 
-    vector<round_bullet> bullets = createSpreadBullets (SCREEN_WIDTH/2 , SCREEN_HEIGHT/5 , renderer);
+    vector<round_bullet> bullets = createSpreadBullets (enemy.hitbox.x , enemy.hitbox.y , renderer);
     waitUntilKeyPressed();
     SDL_Event e;
     while (!END_GAME)
@@ -36,14 +36,14 @@ int main(int argc , char* argv[])
             enemy.render(renderer);
             enemy.movement(rand()%4);
 
-            shootBullets(bullets , player , renderer);
+            shoot_bullets(bullets , player , renderer);
             player.load(renderer , enemy);
 
 
             bulletTimer++;
             if (bulletTimer >= BULLET_INTERVAL)
             {
-                reloadBullets(enemy.hitbox.x , enemy.hitbox.y , bullets);
+                reload_bullets(enemy.hitbox.x , enemy.hitbox.y , bullets);
                 bulletTimer = 0;
             }
         }
