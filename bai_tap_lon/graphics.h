@@ -40,9 +40,12 @@ SDL_Window* initSDL(int SCREEN_WIDTH, int SCREEN_HEIGHT, const char* WINDOW_TITL
 
     SDL_Window* window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH + MENU_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (window == nullptr) logErrorAndExit("CreateWindow", SDL_GetError());
-    if (TTF_Init() == -1) {
+    if (!IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG))
+            logErrorAndExit( "SDL_image error:", IMG_GetError());
+
+    if (TTF_Init() == -1)
             logErrorAndExit("SDL_ttf could not initialize! SDL_ttf Error: ", TTF_GetError());
-        }
+
     return window;
 }
 

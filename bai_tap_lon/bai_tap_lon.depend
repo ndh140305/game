@@ -102,7 +102,7 @@
 
 1715140146 c:\users\cuong\documents\github\game\bai_tap_lon\defs.h
 
-1715140122 c:\users\cuong\documents\github\game\bai_tap_lon\object.h
+1715142984 c:\users\cuong\documents\github\game\bai_tap_lon\object.h
 	<vector>
 	<iostream>
 	<math.h>
@@ -112,7 +112,7 @@
 	"defs.h"
 	"sounds.h"
 
-1715141258 c:\users\cuong\documents\github\game\bai_tap_lon\graphics.h
+1715142019 c:\users\cuong\documents\github\game\bai_tap_lon\graphics.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>

@@ -83,6 +83,10 @@ struct Enemy
     {
         win = IMG_LoadTexture (renderer , "img//win.jpg");
         texture = IMG_LoadTexture (renderer , "img//enemy1.png");
+        if (texture == NULL)
+        {
+            SDL_Log("Failed to load enemy texture: %s", IMG_GetError());
+        }
     }
 
     void render(SDL_Renderer* renderer)
