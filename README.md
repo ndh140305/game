@@ -6,7 +6,7 @@
 
 3. Ngưỡng điểm em mong muốn là 7.5;
 
-4. Đây là game em tự viết với đồ họa đơn giản (2), trong đó em đã học và áp dụng những kỹ thuật sau, dựa trên tài liệu học đã được cung cấp:
+4. Đây là game em tự viết với đồ họa đơn giản, trong đó em đã học và áp dụng những kỹ thuật sau, tham khảo dựa trên tài liệu học đã được cung cấp:
 - Chia project thành nhiều file để tiện quản lý;
 - Xử lý event chuột (click menu), event bàn phím (di chuyển nhân vật, bắn đạn);
 - Xử lý va chạm (giữa đạn và nhân vật);
