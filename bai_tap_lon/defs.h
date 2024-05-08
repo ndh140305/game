@@ -15,6 +15,8 @@ const int PLAYER_HEIGHT = 30;
 const int PLAYER_BULLET_SPEED = 7;
 const int PLAYER_SPEED = 3;
 
+const int ENEMY_WIDTH = 50;
+const int ENEMY_HEIGHT = 50;
 const int ENEMY_BULLET_SPEED = 2;
 const int ENEMY_HEALTH = 30;
 const int ENEMY_SPEED = 20;

@@ -50,7 +50,6 @@ void play(Mix_Chunk* gChunk)
 
 void load_BGM()
 {
-    Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048);
     Mix_Music* music = loadMusic("sounds//music.mp3");
     play(music);
 }

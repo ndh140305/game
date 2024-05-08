@@ -4,7 +4,6 @@
 #include "sounds.h"
 #include "background.h"
 #include "menu.h"
-#include "SDL_ttf.h"
 using namespace std;
 
 int main(int argc , char* argv[])
@@ -25,7 +24,7 @@ int main(int argc , char* argv[])
     SDL_Event e;
     while (!END_GAME)
     {
-        if ( SDL_PollEvent(&e) != 0 && e.type == SDL_QUIT )
+        if ( SDL_PollEvent (&e) == 0 && e.type == SDL_QUIT )
         {
             break;
         }
@@ -38,7 +37,6 @@ int main(int argc , char* argv[])
 
             shoot_bullets(bullets , player , renderer);
             player.load(renderer , enemy);
-
 
             bulletTimer++;
             if (bulletTimer >= BULLET_INTERVAL)

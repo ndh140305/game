@@ -92,18 +92,17 @@
 	"graphics.h"
 	"defs.h"
 
-1715012360 source:c:\users\cuong\documents\github\game\bai_tap_lon\main.cpp
+1715140274 source:c:\users\cuong\documents\github\game\bai_tap_lon\main.cpp
 	"defs.h"
 	"object.h"
 	"graphics.h"
 	"sounds.h"
 	"background.h"
 	"menu.h"
-	"SDL_ttf.h"
 
-1715012036 c:\users\cuong\documents\github\game\bai_tap_lon\defs.h
+1715140146 c:\users\cuong\documents\github\game\bai_tap_lon\defs.h
 
-1715012152 c:\users\cuong\documents\github\game\bai_tap_lon\object.h
+1715140122 c:\users\cuong\documents\github\game\bai_tap_lon\object.h
 	<vector>
 	<iostream>
 	<math.h>
@@ -113,14 +112,14 @@
 	"defs.h"
 	"sounds.h"
 
-1714987430 c:\users\cuong\documents\github\game\bai_tap_lon\graphics.h
+1715141258 c:\users\cuong\documents\github\game\bai_tap_lon\graphics.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
 	<SDL_ttf.h>
 	"defs.h"
 
-1714405415 c:\users\cuong\documents\github\game\bai_tap_lon\sounds.h
+1715101170 c:\users\cuong\documents\github\game\bai_tap_lon\sounds.h
 	<SDL_mixer.h>
 
 1714558954 c:\users\cuong\documents\github\game\bai_tap_lon\background.h

@@ -61,7 +61,7 @@ struct round_bullet
 
     bool isOutOfScreen()
     {
-        return hitbox.x < 0 || hitbox.y < 0 || hitbox.x > SCREEN_WIDTH || hitbox.y > SCREEN_HEIGHT;
+        return hitbox.x + hitbox.w< 0 || hitbox.y + hitbox.h < 0 || hitbox.x > SCREEN_WIDTH || hitbox.y > SCREEN_HEIGHT;
     }
 
 };
@@ -75,7 +75,7 @@ struct Enemy
     SDL_Rect hitbox;
     Enemy()
     {
-        hitbox = {400 , 100 , 50 , 50};
+        hitbox = {400 , 100 , ENEMY_WIDTH , ENEMY_HEIGHT};
         health = ENEMY_HEALTH;
     }
 
